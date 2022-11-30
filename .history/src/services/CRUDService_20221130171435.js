@@ -39,62 +39,25 @@ const createNewUser = async (data) => {
     });
 };
 
-const getEditUser = async (userId) => {
+const editUser = async (userId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const user = await db.User.findOne({
+            // await db.User.update(
+            //     { lastName: "Doe" },
+            //     {
+            //         where: {
+            //             id: userId,
+            //         },
+            //     }
+            // );
+            const user = db.User.findOne({
                 where: {
                     id: userId,
                 },
-                raw: true,
             });
-            if (user) {
-                resolve(user);
-            } else {
-                resolve([]);
-            }
+            resolve("edit success");
         } catch (error) {
             reject("error: ", error);
-        }
-    });
-};
-const putUser = async (user) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const currentUser = await db.User.findOne({
-                where: { id: user.id },
-            });
-
-            if (currentUser) {
-                await db.User.update(user, {
-                    where: {
-                        id: user.id,
-                    },
-                });
-                resolve("update success");
-            } else {
-                resolve("can not find user");
-            }
-        } catch (error) {
-            reject("error: ", error);
-        }
-    });
-};
-
-const deleteUser = (userId) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const user = await db.User.findOne({
-                where: { id: userId },
-            });
-            if (user) {
-                await user.destroy();
-                resolve();
-            } else {
-                reject();
-            }
-        } catch (error) {
-            reject(error);
         }
     });
 };
@@ -110,4 +73,4 @@ const hashUserPassword = (password) => {
     });
 };
 
-export default { createNewUser, getAllUsers, getEditUser, putUser, deleteUser };
+export default { createNewUser, getAllUsers, editUser };

@@ -21,7 +21,7 @@
                         <th scope="col">firsname</th>
                         <th scope="col">Last name</th>
                         <th scope="col">email</th>
-                        <th scope="col">action</th>
+                        <th scope="col">email</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,18 +31,6 @@
                         <td><%= users[i].firstName %></td>
                         <td><%= users[i].lastName %></td>
                         <td><%= users[i].email %></td>
-                        <td>
-                            <a
-                                href="/edit-user?id=<%= users[i].id %>"
-                                class="btn btn-success"
-                                >edit</a
-                            >
-                            <a
-                                href="/delete-user?id=<%= users[i].id %>"
-                                class="btn btn-danger"
-                                >remove</a
-                            >
-                        </td>
                     </tr>
                     <% } %>
                 </tbody>

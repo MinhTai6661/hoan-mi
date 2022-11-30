@@ -91,7 +91,7 @@ const deleteUser = (userId) => {
                 await user.destroy();
                 resolve();
             } else {
-                reject();
+                reject;
             }
         } catch (error) {
             reject(error);

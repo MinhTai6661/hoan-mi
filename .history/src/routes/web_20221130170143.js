@@ -6,18 +6,14 @@ import {
     getCRUD,
     postCRUD,
     displayCRUD,
-    getEditUser,
-    putCRUD,
-    deleteUser,
+    editUser,
 } from "../controllers/homeController";
 const initWebRoutes = (app) => {
     router.get("/", getHomePage);
     router.get("/crud", getCRUD);
     router.get("/get-crud", displayCRUD);
-    router.get("/edit-user", getEditUser);
+    router.get("/edit-user?id", editUser);
     router.post("/post-crud", postCRUD);
-    router.post("/put-crud", putCRUD);
-    router.get("/delete-user", deleteUser);
 
     return app.use("/", router);
 };
