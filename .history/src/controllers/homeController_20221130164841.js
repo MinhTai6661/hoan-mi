@@ -21,9 +21,8 @@ const postCRUD = async (req, res) => {
 };
 const displayCRUD = async (req, res) => {
     const users = await CRUDService.getAllUsers();
-    console.log("displayCRUD  users", users);
 
-    return res.render("displayallUser.ejs", { users });
+    return res.render("displayallUser.ejs", { data });
 };
 
 export { getHomePage, getCRUD, postCRUD, displayCRUD };
