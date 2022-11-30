@@ -1,2 +1,0 @@
-const createNewUser = () => {};
-export { createNewUser };
