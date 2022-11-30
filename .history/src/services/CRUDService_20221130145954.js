@@ -1,0 +1,2 @@
+const createNewUser = () => {};
+export { createNewUser };
