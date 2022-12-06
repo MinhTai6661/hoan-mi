@@ -14,8 +14,8 @@ const initWebRoutes = (app) => {
     router.get("/", getHomePage);
     router.get("/crud", getCRUD);
     router.get("/get-crud", displayCRUD);
-    router.get("/edit-user", getEditUser);
     router.post("/post-crud", postCRUD);
+    router.get("/edit-user", getEditUser);
     router.post("/put-crud", putCRUD);
     router.get("/delete-user", deleteUser);
 
