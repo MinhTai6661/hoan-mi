@@ -19,9 +19,7 @@ const handleLogin = (email, password) => {
                 if (user) {
                     //phut 38:40 #35
                     const checkPassword = await bcrypt.compareSync(password, user["password"]);
-
                     delete user.password;
-
                     if (checkPassword) {
                         userData.errorCode = 0;
                         userData.errorMessage = "ok";

@@ -40,7 +40,7 @@ const putCRUD = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     const userId = req.query.id;
-    console.log(userId);
+    // console.log(userId);
     if (userId) {
         await CRUDService.deleteUser(userId);
         return res.send("delete user, ");
@@ -49,12 +49,4 @@ const deleteUser = async (req, res) => {
     }
 };
 
-export {
-    getHomePage,
-    getCRUD,
-    postCRUD,
-    displayCRUD,
-    getEditUser,
-    putCRUD,
-    deleteUser,
-};
+export { getHomePage, getCRUD, postCRUD, displayCRUD, getEditUser, putCRUD, deleteUser };

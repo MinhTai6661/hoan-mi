@@ -14,8 +14,12 @@ app.use(cors({ origin: true }));
 
 //config app
 
-app.use(bodyParser.json()); //get params from client
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json()); //get params from client
+// app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(bodyParser.json({ limit: "50mb" })); //get params from client
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
+
 viewEngine(app);
 initAPIRoutes(app);
 initWebRoutes(app);
