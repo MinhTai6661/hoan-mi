@@ -6,14 +6,22 @@ const router = express.Router();
 
 const initAPIRoutes = (app) => {
     router.get("/get-all-user", userController.getAllUsers);
-    router.post("/login", userController.handleLogin);
-    router.delete("/delete-user", userController.handleDeleteUser);
-    router.post("/create-new-user", userController.handleCreateNewUser);
-    router.put("/edit-user", userController.handleEditUser);
     router.get("/all-code", userController.handleGetAllCode);
     router.get("/top-doctor-home", doctorController.handleGetTopDoctor);
     router.get("/get-all-doctors", doctorController.handleGetAllDoctor);
+    router.get("/get-doctor-detail", doctorController.handleGetDoctorDetail);
+    router.get("/get-doctor-schedules", doctorController.handleGetDoctorSchedules);
+
+    router.post("/login", userController.handleLogin);
+    router.post("/create-new-user", userController.handleCreateNewUser);
     router.post("/create-doctor-detail", doctorController.handleCreateDoctorDetail);
+    router.post("/create-doctor-schedule", doctorController.handleCreateDoctorSchedule);
+
+    router.put("/edit-user", userController.handleEditUser);
+    router.put("/update-doctor", doctorController.handleEditDoctor);
+    router.put("/update-doctor", doctorController.handleEditDoctor);
+
+    router.delete("/delete-user", userController.handleDeleteUser);
     return app.use("/api", router);
 };
 export default initAPIRoutes;

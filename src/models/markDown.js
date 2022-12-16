@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            // MarkDown.hasMany(models.User, { foreignKey: "positionId", as: "positionData" });
-            // MarkDown.hasMany(models.User, { foreignKey: "gender", as: "genderData" });
+            MarkDown.belongsTo(models.User, { foreignKey: "doctorId", targetKey: "id" });
+            // MarkDown.hasOne(models.User,{foreignKey:'specialtyId'})
         }
     }
     MarkDown.init(

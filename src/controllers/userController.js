@@ -65,7 +65,6 @@ const handleGetAllCode = async (req, res) => {
         const type = req.query.type;
 
         const data = await userService.getAllCode(type);
-        // console.log("handleGetAllCode  data", data);
         return res.status(200).json(data);
     } catch (e) {
         return res.status(200).json({

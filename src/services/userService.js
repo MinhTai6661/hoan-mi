@@ -80,7 +80,6 @@ const getAllUsers = (userId) => {
                 });
             }
 
-            // console.log("returnnewPromise  allusers", allusers);
             resolve(users);
         } catch (error) {
             reject(error);

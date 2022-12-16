@@ -54,10 +54,64 @@ const handleCreateDoctorDetail = async (req, res) => {
         });
     }
 };
+const handleGetDoctorDetail = async (req, res) => {
+    const id = req.query.id;
+    try {
+        const data = await doctorService.getDoctorDetail(id);
+        return res.status(200).json(data);
+    } catch (e) {
+        return res.status(200).json({
+            erorrCode: -1,
+            message: "Error ",
+        });
+    }
+};
+const handleEditDoctor = async (req, res) => {
+    const newData = req.body;
+
+    try {
+        const data = await doctorService.editDoctor(newData);
+        return res.status(200).json(data);
+    } catch (e) {
+        return res.status(200).json({
+            erorrCode: -1,
+            message: "Error ",
+        });
+    }
+};
+const handleCreateDoctorSchedule = async (req, res) => {
+    const body = req.body;
+
+    try {
+        const data = await doctorService.createDoctorSchedule(body);
+        return res.status(200).json(data);
+    } catch (e) {
+        return res.status(200).json({
+            erorrCode: -1,
+            message: "Error ",
+        });
+    }
+};
+const handleGetDoctorSchedules = async (req, res) => {
+    const query = req.query;
+    try {
+        const data = await doctorService.getDoctorSchedules(query);
+        return res.status(200).json(data);
+    } catch (e) {
+        return res.status(200).json({
+            erorrCode: -1,
+            message: "Error ",
+        });
+    }
+};
 
 export default {
     handleGetTopDoctor,
     handleGetAllDoctor,
     handleCreateMarkDown,
     handleCreateDoctorDetail,
+    handleGetDoctorDetail,
+    handleEditDoctor,
+    handleCreateDoctorSchedule,
+    handleGetDoctorSchedules,
 };
