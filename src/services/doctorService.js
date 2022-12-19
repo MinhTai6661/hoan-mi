@@ -239,7 +239,6 @@ const createDoctorSchedule = (body) => {
 const getDoctorSchedules = (query) => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log("----------------------");
             if (!query.doctorId || !query.date) {
                 resolve({
                     errorCode: 1,
@@ -248,11 +247,14 @@ const getDoctorSchedules = (query) => {
                 return;
             }
 
+            //1671235200000
             const { doctorId, date } = query;
+            console.log("returnnewPromise  date", date);
             const data = await db.Schedule.findAll({
                 where: { doctorId: doctorId, date: +date },
                 raw: true,
             });
+            console.log("returnnewPromise  data", data);
 
             const filteredData = data.filter(
                 (item) => item.currentNumber < 10 // +process.env.MAX_NUMBER_SCHEDULE
@@ -261,7 +263,6 @@ const getDoctorSchedules = (query) => {
                 errorCode: 0,
                 data: filteredData,
             });
-            console.log("----------------------");
         } catch (e) {
             reject(e);
         }

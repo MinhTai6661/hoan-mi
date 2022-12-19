@@ -1,6 +1,7 @@
 import express from "express";
 import userController from "../controllers/userController";
 import doctorController from "../controllers/doctorController";
+import patientController from "../controllers/patientController";
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ const initAPIRoutes = (app) => {
     router.post("/login", userController.handleLogin);
     router.post("/create-new-user", userController.handleCreateNewUser);
     router.post("/create-doctor-detail", doctorController.handleCreateDoctorDetail);
-    router.post("/create-doctor-schedule", doctorController.handleCreateDoctorSchedule);
+    router.post("/create-apoinment", patientController.handleCreateApoinment);
 
     router.put("/edit-user", userController.handleEditUser);
     router.put("/update-doctor", doctorController.handleEditDoctor);

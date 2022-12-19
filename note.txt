@@ -1,0 +1,11 @@
+
+website booking appoinment to see doctor of hoan my *BINH DUONG*
+
+
+delete table clinicId
+
+rename table doctor_clinic_specialty to doctor_clinic_specialty
+
+remove property clinic id in modified table above step
+
+add property room to specialty (option)
