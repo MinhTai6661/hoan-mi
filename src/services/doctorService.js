@@ -184,11 +184,9 @@ const createDoctorSchedule = (body) => {
                 });
             }
             const { schedules } = body;
-            console.log("returnnewPromise  schedules", schedules);
             schedules.forEach((item) => {
                 item.maxNumber = +process.env.MAX_NUMBER_SCHEDULE;
             });
-            console.log("schedules.forEach  schedules", schedules);
 
             //get existent schedule
             const existentSchedules = await db.Schedule.findAll({
@@ -249,12 +247,10 @@ const getDoctorSchedules = (query) => {
 
             //1671235200000
             const { doctorId, date } = query;
-            console.log("returnnewPromise  date", date);
             const data = await db.Schedule.findAll({
                 where: { doctorId: doctorId, date: +date },
                 raw: true,
             });
-            console.log("returnnewPromise  data", data);
 
             const filteredData = data.filter(
                 (item) => item.currentNumber < 10 // +process.env.MAX_NUMBER_SCHEDULE

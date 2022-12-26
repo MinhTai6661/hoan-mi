@@ -16,7 +16,9 @@ const initAPIRoutes = (app) => {
     router.post("/login", userController.handleLogin);
     router.post("/create-new-user", userController.handleCreateNewUser);
     router.post("/create-doctor-detail", doctorController.handleCreateDoctorDetail);
+    router.post("/create-doctor-schedule", doctorController.handleCreateDoctorSchedule);
     router.post("/create-apoinment", patientController.handleCreateApoinment);
+    router.post("/verify-appoiment", patientController.handleVerifySchedule);
 
     router.put("/edit-user", userController.handleEditUser);
     router.put("/update-doctor", doctorController.handleEditDoctor);
