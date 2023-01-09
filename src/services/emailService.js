@@ -31,7 +31,6 @@ const renderEmailContent = (emailReq) => {
     return `
         <h1>Xin chào ${emailReq.fullName}</h1>
         <h3>Xin chào  ${emailReq.fullName}, bạn vừa đặt lịch khám tại website hoanmibinhduong.com</h3>
-        <h4>Vui lòng <a  href='${process.env.URL_REACT}/verify-booking?doctorId=${emailReq.doctorId}&token=${emailReq.verifyToken}'>xác nhận</a> đặt lịch nếu thông tin bên dưới trên là đúng</h4>
 
         <h2><strong>THÔNG TIN KHÁM BỆNH</strong>:</h2>
         
@@ -48,10 +47,7 @@ const renderEmailContent = (emailReq) => {
         <p><strong>Giới tính</strong>: ${emailReq.gender}</p>
         <p><strong>Ngày sinh</strong>: ${emailReq.birthday}</p>
         
-        <input name='doctorId' value='${emailReq.doctorId}'/>
-        <input name='token' value='${emailReq.verifyToken}'/>
-        
-       
+        <h3>Vui lòng <a  href='${process.env.URL_REACT}/verify-booking?doctorId=${emailReq.doctorId}&token=${emailReq.verifyToken}'><strong> XÁC NHẬN </strong></></a> đặt lịch nếu thông tin bên dưới trên là đúng</h3>
         <h3>Chúng tôi xin chân thành cảm ơn!</h3>
     
     `;

@@ -35,6 +35,10 @@ module.exports = {
             birthday: {
                 type: Sequelize.DATE,
             },
+
+            reason: {
+                type: Sequelize.TEXT,
+            },
             timeType: {
                 type: Sequelize.STRING,
             },

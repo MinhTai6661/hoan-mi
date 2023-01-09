@@ -9,14 +9,25 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER,
             },
+
+            /**
+             * 
+             *   name: DataTypes.STRING,
+            descriptionHTML: DataTypes.TEXT,
+            descriptionMarkDown: DataTypes.TEXT,
+            image: DataTypes.BLOB("long"),
+             */
             name: {
                 type: Sequelize.STRING,
             },
-            description: {
+            descriptionHTML: {
+                type: Sequelize.TEXT,
+            },
+            descriptionMarkDown: {
                 type: Sequelize.TEXT,
             },
             image: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.BLOB("long"),
             },
 
             createdAt: {

@@ -104,7 +104,25 @@ const handleGetDoctorSchedules = async (req, res) => {
         });
     }
 };
+const handleGetDoctorBySpecialty = async (req, res) => {
+    const params = req.query;
+    console.log("handleGetDoctorBySpecialty  params", params);
 
+    const data = await doctorService.getDoctorBySpecialty(params);
+    res.status(200).json(data);
+};
+const handleConfirmSchedule = async (req, res) => {
+    const { bookingId } = req.body; //because xao choa
+    console.log("handleConfirmSchedule  req.body", req.body);
+    console.log("handleConfirmSchedule  bookingId", bookingId);
+
+    const data = await doctorService.confirmSchedule(bookingId);
+    res.status(200).json(data);
+};
+const handleRemoveOldBooking = async (req, res) => {
+    const data = await doctorService.removeOldBooking();
+    res.status(200).json(data);
+};
 export default {
     handleGetTopDoctor,
     handleGetAllDoctor,
@@ -114,4 +132,7 @@ export default {
     handleEditDoctor,
     handleCreateDoctorSchedule,
     handleGetDoctorSchedules,
+    handleGetDoctorBySpecialty,
+    handleConfirmSchedule,
+    handleRemoveOldBooking,
 };

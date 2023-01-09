@@ -13,7 +13,6 @@ const handleLogin = (email, password) => {
                 userData.errorCode = 0;
                 const user = await db.User.findOne({
                     where: { email: email },
-                    // attributes: { exclude: ["password"] },
                     raw: true,
                 });
                 if (user) {
@@ -214,6 +213,7 @@ const getAllCode = (type) => {
         }
     });
 };
+
 export default {
     handleLogin,
     getAllUsers,

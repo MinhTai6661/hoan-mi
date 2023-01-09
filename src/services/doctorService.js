@@ -1,6 +1,9 @@
 import db from "../models";
 import dotenv from "dotenv";
 import _ from "lodash";
+import { Op } from "sequelize";
+import moment from "moment/moment";
+import { getUnix } from "./commons";
 
 const getTopDoctor = (limit) => {
     return new Promise(async (resolve, reject) => {
@@ -49,8 +52,17 @@ const getAllDoctors = () => {
                 },
                 raw: true,
                 attributes: {
-                    exclude: ["password", "image"],
+                    exclude: ["password"],
                 },
+                include: [
+                    {
+                        model: db.MarkDown,
+
+                        attributes: ["description"],
+                    },
+                    { model: db.Allcode, as: "genderData", attributes: ["valueChina", "valueVi"] },
+                ],
+                nest: true,
             });
             if (data) {
                 resolve({
@@ -78,6 +90,7 @@ const createDoctorDetail = (data) => {
                     description: data.description,
                     contentHTML: data.contentHTML,
                     doctorId: data.doctorId,
+                    specialtyId: data.specialty,
                 });
                 resolve({
                     errorCode: 0,
@@ -150,6 +163,7 @@ const editDoctor = (newData) => {
                             contentHTML: newData.contentHTML,
                             contentMarkDown: newData.contentMarkDown,
                             description: newData.description,
+                            specialtyId: newData.specialty,
                         },
                         {
                             where: { doctorId: newData.doctorId },
@@ -253,11 +267,122 @@ const getDoctorSchedules = (query) => {
             });
 
             const filteredData = data.filter(
-                (item) => item.currentNumber < 10 // +process.env.MAX_NUMBER_SCHEDULE
+                (item) => item.currentNumber < +process.env.MAX_NUMBER_SCHEDULE // +process.env.MAX_NUMBER_SCHEDULE
             );
             resolve({
                 errorCode: 0,
                 data: filteredData,
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+const getDoctorBySpecialty = (params) => {
+    return new Promise(async (resolve, reject) => {
+        const { specialtyId } = params;
+        console.log("returnnewPromise  specialtyId", specialtyId);
+        try {
+            if (!specialtyId) {
+                resolve({
+                    errorCode: 1,
+                    errorMessage: "missing params",
+                });
+                return;
+            }
+            //get all doctorId that have specialtyId =5 and
+            const doctorsList = await db.MarkDown.findAll({
+                where: { specialtyId: +specialtyId },
+                // attributes: ["User"],
+                include: [
+                    {
+                        model: db.User,
+                        attributes: {
+                            exclude: ["password"],
+                        },
+                    },
+                ],
+                nested: true,
+            });
+
+            resolve({
+                errorCode: 0,
+                data: doctorsList,
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+const removeOldBooking = (bookingId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let now = new Date();
+
+            const yesterday = new Date(moment(now).format("YYYY-MM-DD")).getTime();
+
+            const res = await db.Booking.update(
+                { statusId: "S4" },
+                {
+                    where: {
+                        date: { [Op.lt]: yesterday },
+                        statusId: ["S1", "S2"],
+                    },
+                }
+            );
+
+            // const res = await db.Booking.findAll();
+            // console.log("returnnewPromise  res", res);
+
+            if (!res) {
+                resolve({
+                    errorCode: 1,
+                    message: "error",
+                });
+            }
+            resolve({
+                errorCode: 0,
+                message: `update successfully, ${res[0]} are updated`,
+                updatedRecord: res[0],
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+const confirmSchedule = (bookingId) => {
+    console.log("confirmSchedule  bookingId", bookingId);
+    return new Promise(async (resolve, reject) => {
+        console.log("returnnewPromise  specialtyId", bookingId);
+        try {
+            if (!bookingId) {
+                resolve({
+                    errorCode: 1,
+                    errorMessage: "missing params",
+                });
+                return;
+            }
+            const booking = await db.Booking.findOne({ where: { id: bookingId } });
+
+            if (!booking) {
+                resolve({
+                    errorCode: 2,
+                    errorMessage: "the schedule is not exsist ",
+                });
+                return;
+            }
+            if (booking?.statusId !== "S2") {
+                resolve({
+                    errorCode: 2,
+                    errorMessage: "the schedule has not been verified yet",
+                });
+                return;
+            }
+            const res = await db.Booking.update({ statusId: "S3" }, { where: { id: bookingId } });
+
+            resolve({
+                errorCode: 0,
+                message: "confirm successfully !",
             });
         } catch (e) {
             reject(e);
@@ -273,4 +398,7 @@ export default {
     editDoctor,
     createDoctorSchedule,
     getDoctorSchedules,
+    getDoctorBySpecialty,
+    confirmSchedule,
+    removeOldBooking,
 };

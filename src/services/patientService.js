@@ -5,7 +5,21 @@ import commonsService from "./commons";
 import { v4 as uuidv4 } from "uuid";
 import commons from "./commons";
 
+import bcrypt from "bcryptjs";
+
+const salt = bcrypt.genSaltSync(10);
+const hashUserPassword = (password) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const hashPassword = await bcrypt.hashSync(password, salt);
+            resolve(hashPassword);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 const createApoinment = (body) => {
+    console.log("createApoinment  body", body);
     return new Promise(async (resolve, reject) => {
         try {
             console.log("-----------------------");
@@ -16,6 +30,7 @@ const createApoinment = (body) => {
                 });
                 return;
             }
+            console.log("returnnewPromise  date", date);
 
             const {
                 doctorId,
@@ -31,6 +46,7 @@ const createApoinment = (body) => {
                 statusId,
                 birthday,
             } = body;
+            console.log("returnnewPromise  date", date);
 
             if (
                 !firstName ||
@@ -59,15 +75,19 @@ const createApoinment = (body) => {
             //find user, if user already exist, show user, else=> create user
             const token = uuidv4();
             const verifyLink = commonsService.handleRenderVerifyLink(token, doctorId);
+            const hashPassword = await hashUserPassword("");
             const [user, createdUser] = await db.User.findOrCreate({
                 where: { email: email }, //find
                 defaults: {
                     //or create
+                    firstName: firstName,
+                    lastName: lastName,
                     email: email,
                     phoneNumber: phoneNumber,
                     roleId: "R3",
                     address: address,
                     gender: gender,
+                    password: hashPassword,
                 },
             });
 
@@ -84,6 +104,7 @@ const createApoinment = (body) => {
                         timeType: timeType,
                         date: +date,
                         birthday: +birthday,
+                        reason: reason,
                         statusId: statusId,
                         token: token,
                     },
@@ -183,7 +204,60 @@ const verifySchedule = (body) => {
     });
 };
 
+const getPatientsListByDoctorId = (params) => {
+    console.log("verifySchedule  body", params);
+    return new Promise(async (resolve, reject) => {
+        try {
+            const { doctorId, date } = params;
+            console.log("returnnewPromise  date", +date);
+            if (!doctorId || !date) {
+                resolve({
+                    errorCode: 1,
+                    errorMessage: "Missing params",
+                });
+                return;
+            }
+            const patientsList = await db.Booking.findAll({
+                where: { date: +date, doctorId: doctorId, statusId: ["S2", "S3"] },
+
+                include: [
+                    {
+                        model: db.Allcode,
+                        as: "scheduleTimeData",
+                        attributes: ["valueChina", "valueVi"],
+                    },
+                    {
+                        model: db.User,
+                        as: "userBooking",
+                        attributes: {
+                            exclude: ["password", "image"],
+                        },
+                        include: [
+                            {
+                                model: db.Allcode,
+                                as: "genderData",
+                                attributes: ["valueChina", "valueVi"],
+                            },
+                        ],
+                    },
+                ],
+                order: [["timeType", "ASC"]],
+                nest: true,
+            });
+            console.log("returnnewPromise  patientsList", patientsList);
+
+            resolve({
+                errorCode: 0,
+                data: patientsList,
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 export default {
     createApoinment,
     verifySchedule,
+    getPatientsListByDoctorId,
 };

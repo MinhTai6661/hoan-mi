@@ -25,8 +25,22 @@ const handleVerifySchedule = async (req, res) => {
         });
     }
 };
+const handleGetPatientsListByDoctorId = async (req, res) => {
+    const params = req.query;
+
+    try {
+        const data = await patientService.getPatientsListByDoctorId(params);
+        return res.status(200).json(data);
+    } catch (e) {
+        return res.status(200).json({
+            erorrCode: -1,
+            message: "Error ",
+        });
+    }
+};
 
 export default {
     handleCreateApoinment,
     handleVerifySchedule,
+    handleGetPatientsListByDoctorId,
 };
